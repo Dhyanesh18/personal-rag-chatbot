@@ -12,7 +12,8 @@ class JSONLogger:
     def log(self, user_msg, assistant_msg):
         entry = {
             "user": user_msg,
-            "assistant": assistant_msg
+            "assistant": assistant_msg,
+            "time": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         }
         with open(self.file_path, "r+") as f:
             data = json.load(f)
