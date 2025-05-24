@@ -10,7 +10,7 @@ class LlamaChat:
             verbose=False
         )
 
-    def generate(self, prompt, max_tokens=200):
+    def generate(self, prompt, max_tokens=500):
         output = self.llm(prompt, max_tokens=max_tokens, stop=["<|user|>", "<|assistant|>", "<|system|>"])
         return output["choices"][0]["text"].strip()
 
