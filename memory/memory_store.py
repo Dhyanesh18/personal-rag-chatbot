@@ -8,9 +8,13 @@ class MemoryStore:
         self.client = chromadb.PersistentClient(path=persist_dir)
         self.collection = self.client.get_or_create_collection(name=collection_name)
 
+    def is_time_query(self,text):
+        return "time" in text.lower() and "what" in text.lower()
+
     def store(self, user_msg, assistant_msg, embedding):
-        combined = f"{user_msg} ||| {assistant_msg}"
-        self.collection.add(documents=[combined], embeddings=[embedding], ids=[str(time.time())])
+        if not self.is_time_query(user_msg):
+            combined = f"{user_msg} ||| {assistant_msg}"
+            self.collection.add(documents=[combined], embeddings=[embedding], ids=[str(time.time())])
 
     def retrieve(self, query_embedding, top_k=3):
         results = self.collection.query(query_embeddings=[query_embedding], n_results=top_k)
