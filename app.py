@@ -7,6 +7,7 @@ from memory.logger import JSONLogger
 from utils.prompt_builder import build_prompt
 from utils.time_utils import get_time_based_greeting
 from utils.chat_log_utils import load_sessions, get_session_summaries
+from utils.type_response_util import type_response
 
 st.set_page_config(page_title="Jarvis", layout="wide")
 
@@ -82,27 +83,21 @@ with chat_container:
 # User Input Box
 user_input = st.chat_input("Type your message...")
 if user_input:
-    # Immediately show the user message
-    st.session_state.chat_history.append({"role":"user", "content": user_input})
+    st.session_state.chat_history.append({"role": "user", "content": user_input})
     user_msg = st.chat_message("user")
     user_msg.write(user_input)
 
-    # Prepare placeholder for assistant reply
     assistant_msg = st.chat_message("assistant")
 
-    # Run embedding and retrieval before generating
     query_embed = embedder.get_embedding(user_input)
     relevant = memory.retrieve(query_embed)
     prompt = build_prompt(system_prompt, relevant, user_input)
 
-    # Show spinner while generating
     with st.spinner("Jarvis is thinking..."):
         response = llama.generate(prompt)
 
-    # Append assistant response to chat history and display it
-    st.session_state.chat_history.append({"role":"assistant", "content": response})
-    assistant_msg.write(response)
-
-    # Log and store as usual
+    st.session_state.chat_history.append({"role": "assistant", "content": response})
     logger.log(user_input, response)
     memory.store(user_input, response, query_embed)
+
+    type_response(response)
