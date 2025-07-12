@@ -3,3 +3,5 @@ chroma_store/
 
 *.gguf
 chat_log.json
+
+**/__pycache__/

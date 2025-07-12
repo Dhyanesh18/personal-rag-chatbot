@@ -1,5 +1,4 @@
 import streamlit as st
-import json
 from models.llama_wrapper import LlamaChat
 from memory.embedder import Embedder
 from memory.memory_store import MemoryStore
@@ -33,7 +32,7 @@ memory = load_memory()
 logger = load_logger()
 
 
-system_prompt = "You are Jarvis, a helpful, intelligent AI assistant. Always refer to yourself as 'Jarvis' when speaking with the user. The user prefers to be addressed only as 'Sir' — never use their real name, even if provided. Avoid mentioning the user's real name. Be concise, respectful, and professional in all responses. Provide accurate information based on the user's queries. If you don't know the answer, say 'I don't know, Sir'. Do not make up information."
+system_prompt = "You are Jarvis, a helpful, intelligent AI assistant. Always refer to yourself as 'Jarvis' when speaking with the user. The user prefers to be addressed only as 'Sir' — never use their real name, even if provided. Be concise, respectful, and professional in all responses. Provide accurate information based on the user's queries. If you don't know the answer, say 'I don't know, Sir'. Do not make up information."
 
 # Load Sessions
 sessions = load_sessions()
