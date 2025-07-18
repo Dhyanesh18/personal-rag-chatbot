@@ -1,9 +1,14 @@
 from llama_cpp import Llama
+from llama_cpp.llama_chat_format import Llama3VisionAlphaChatHandler
 
 class LlamaChat:
     def __init__(self, model_path, n_gpu_layers=28, n_threads=12, n_ctx=8192): 
+        handler = Llama3VisionAlphaChatHandler(
+            clip_model_path="./models/llama-3-vision-alpha-mmproj-f16.gguf"
+        )
         self.llm = Llama(
             model_path=model_path,
+            chat_handler=handler,
             n_gpu_layers=n_gpu_layers,
             n_threads=n_threads,
             n_ctx=n_ctx

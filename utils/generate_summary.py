@@ -7,15 +7,12 @@ def generate_session_summary(messages: list, llama_instance) -> str:
         conversation += f"User: {user_query}\nJARVIS: {assistant_response}\n\n"
     summary_prompt = f"""
 You are JARVIS, an AI assistant. You are tasked with writing a concise, factual summary of the following conversation.
-
-Do not include greetings, sign-offs, disclaimers, or editorial comments like "Please feel free to edit".
-
 ONLY return the summary. Be neutral and strictly factual. No imaginary context. No speculative language.
 
 Conversation:
 {conversation}
 
-Summary (start below this line):
+Summary :
 """
     
     num_messages = len(messages)

@@ -132,7 +132,7 @@ class SessionManager:
     
         # Only very explicit ending phrases
         ending_phrases = [
-            r'\b(goodbye|bye|see you later|farewell)\s*$',  # Must be at end
+            r'\b(goodbye|bye|see you later|farewell)\s*$',  
             r'\b(that\'s all for now|that\'s it for today)\b',
             r'\b(end session|close session|terminate session)\b',
             r'\b(signing off|logging off)\b'
