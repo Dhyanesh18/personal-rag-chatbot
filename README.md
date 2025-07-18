@@ -46,18 +46,51 @@ cd jarvis-rag-chatbot
 # Install dependencies
 pip install -r requirements.txt
 
-# IMPORTANT: llama-cpp-python must be installed with CUDA support for SM86
-pip uninstall llama-cpp-python
-set CMAKE_ARGS="-DGGML_CUDA=on;-DCMAKE_CUDA_ARCHITECTURES=86"
-set FORCE_CMAKE=1
-pip install llama-cpp-python --no-cache-dir --force-reinstall
-
 # Prepare models
 mkdir -p models
 # Download and place:
 # - llama-3.1-8b-instruct-q4_k_m.gguf
 # - llama-3-vision-alpha-mmproj-f16.gguf
 ```
+
+### 🔧 Build `llama-cpp-python` with CUDA 12.6
+
+This project requires a custom build of `abetlen/llama-cpp-python` with CUDA support.
+
+#### 1. Prerequisites
+- CUDA Toolkit 12.6 (nvcc, etc.) installed and in PATH
+- C/C++ compiler + CMake installed
+
+#### 2. Clone the repo
+```bash
+git clone --recurse-submodules https://github.com/abetlen/llama-cpp-python.git
+cd llama-cpp-python
+```
+#### 3. Build and install
+
+Linux / Mac:
+```
+export CUDA_HOME=/usr/local/cuda-12.6
+export PATH="$CUDA_HOME/bin:$PATH"
+export FORCE_CMAKE=1
+export CMAKE_ARGS="-DGGML_CUDA=on"
+pip install . --upgrade --force-reinstall --no-cache-dir
+```
+Windows (CMD / PowerShell):
+
+```
+set CUDA_HOME="C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.6"
+set PATH=%CUDA_HOME%\bin;%PATH%
+set FORCE_CMAKE=1
+set CMAKE_ARGS=-DGGML_CUDA=on
+pip install . --upgrade --force-reinstall --no-cache-dir
+```
+#### 4. Test your installation
+```
+from llama_cpp import Llama  
+llm = Llama(model_path="model.gguf", n_gpu_layers=-1, verbose=True)  
+```
+Look for gpu initialization logs
 
 ---
 
@@ -87,9 +120,17 @@ mkdir -p models
 ---
 
 ## Usage
-
+```
+docker-compose up -d
+```
 ```bash
 python main.py
+```
+
+To Exit the application, use Ctrl + C. Then stop the elasticsearch containers
+
+```
+docker-compose down
 ```
 
 ### Interactive Commands
